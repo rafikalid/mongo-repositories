@@ -1,25 +1,7 @@
-import {MongoClient, ObjectID} from 'mongodb'
+import { fromOptions, RepositoryOptions } from '@types';
+import {MongoClient, ObjectID} from 'mongodb';
 
-import Collection from './collection'
-/**
- * Main Mongo Repository class
- */
-interface RepositoryOptions{
-	/** Prefix for index names */
-	prefix: string,
-	log?:	Function|undefined|null
-}
-
-/** From options */
-export interface mongoIndex{
-	name: string,
-	key: any
-}
-interface fromOptions{
-	name: string,
-	indexes?: mongoIndex[],
-	define: (collection: Collection, schema:any)=> any
-}
+import Collection from './collection';
 
 
 export default class Repository{

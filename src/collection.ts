@@ -1,6 +1,6 @@
 import type Repository from './repository';
-import {mongoIndex} from './repository';
 import type {Collection as MongoCollection} from 'mongodb'
+import { mongoIndex } from '@types';
 
 const COLLECTION_NAME_REGEX= /^\w[\w_-]{0,63}$/;
 
