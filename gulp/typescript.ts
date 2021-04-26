@@ -1,20 +1,19 @@
 /**
  * Compile Typescript files
  */
-import {src, dest} from 'gulp';
+import {src, dest, lastRun} from 'gulp';
 import GulpTypescript from 'gulp-typescript';
 import SrcMap from 'gulp-sourcemaps';
-import Merge from 'merge2';
 
-const TsProject = GulpTypescript.createProject('tsconfig.json', {pretty: true, declaration: true});
+//TODO Get "isProd" from CLI
+const isProd= false;
+const TsProject = GulpTypescript.createProject('tsconfig.json', {removeComments: isProd, pretty: !isProd});
 // import babel from 'gulp-babel';
 
-export function compile(globSrc: string, options: object){
-	var tsResult= src(globSrc, options)
+export default function typescriptCompile(){
+	return src('src/**/*.ts', {nodir: true, since: lastRun(typescriptCompile)})
 		.pipe(SrcMap.init())
-		.pipe(TsProject());
-	return Merge([
-		tsResult.dts.pipe(dest('types/')),
-		tsResult.js.pipe(SrcMap.write('.')).pipe(dest('build'))
-	]);
+		.pipe(TsProject())
+		.pipe(SrcMap.write('.'))
+		.pipe(dest('build'));
 }

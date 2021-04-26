@@ -1,9 +1,8 @@
 {
   "name": "mongo-repositories",
-  "version": "0.0.3",
+  "version": "0.1.1",
   "description": "Tiny layer over mongoDB native driver to simplify queries, validation and indexing",
   "main": "build/index.js",
-  "typings": "types/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
