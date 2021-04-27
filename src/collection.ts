@@ -62,7 +62,7 @@ export default abstract class Collection {
 		// Check indexes
 		for(var i= 0, len= schemaIndexes.length; i<len; i++){
 			var index= schemaIndexes[i];
-			if(index.name!.startsWith(prefix))
+			if(!index.name!.startsWith(prefix))
 				throw new Error(`All indexes expected to be prefixed with: ${prefix}. Got ${index.name} on colllection ${this.name}`);
 			if(newIndexNameSet.has(index.name)) throw new Error(`Duplicated index: ${index.name} on collection ${this.name}`);
 			newIndexNameSet.add(index.name);
