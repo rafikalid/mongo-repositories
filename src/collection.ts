@@ -60,7 +60,8 @@ export default abstract class Collection {
 		var prefix= this._indexPrefix;
 		var newIndexNameSet= new Set();
 		// Check indexes
-		for(var i= 0, len= schemaIndexes.length; i<len; i++){
+		var i, len;
+		for(i= 0, len= schemaIndexes.length; i<len; i++){
 			var index= schemaIndexes[i];
 			if(!index.name!.startsWith(prefix))
 				throw new Error(`All indexes expected to be prefixed with: ${prefix}. Got ${index.name} on colllection ${this.name}`);
@@ -76,10 +77,11 @@ export default abstract class Collection {
 				var indexName= existingIndexes[i].name;
 				if(indexName.startsWith(prefix)){
 					if(newIndexNameSet.has(indexName)) unmodified.add(indexName);
-					else
+					else{
 						this.log?.(`${this.name}: Drop index>> ${indexName}`);
 						await collection.dropIndex(indexName); // remove unused index
 						// removedIdx.push(indexName);
+					}
 				}
 			}
 		// Insert new Indexes
