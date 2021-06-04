@@ -7,7 +7,6 @@ import SrcMap from 'gulp-sourcemaps';
 import CreateImportTransformer from './typescript-transformer';
 import {parse} from 'json5';
 import {readFileSync} from 'fs';
-import Rename from 'gulp-rename';
 
 
 //Load config
@@ -31,7 +30,6 @@ export default function typescriptCompile(){
 	return src('src/**/*.ts', {nodir: true, since: lastRun(typescriptCompile)})
 		.pipe(SrcMap.init())
 		.pipe(TsProject())
-		.pipe(Rename({extname: '.mjs'}))
 		.pipe(SrcMap.write('.'))
 		.pipe(dest('build'));
 }
