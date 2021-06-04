@@ -1,5 +1,5 @@
 import type Repository from './repository';
-import {Collection as MongoCollection, Db, ObjectID, IndexSpecification} from 'mongodb'
+import type {Collection as MongoCollection, ObjectID, IndexSpecification} from 'mongodb'
 
 type Document= Record<string, any>;
 

@@ -1,4 +1,6 @@
-import {MongoClient, MongoClientOptions, ObjectID} from 'mongodb';
+import type {MongoClientOptions} from 'mongodb';
+import MongoDB from 'mongodb'
+const {MongoClient}= MongoDB;
 
 import Collection from './collection';
 

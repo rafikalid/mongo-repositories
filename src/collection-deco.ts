@@ -1,4 +1,4 @@
-import { IndexSpecification } from "mongodb";
+import type { IndexSpecification } from "mongodb";
 import type Repository from "./repository";
 // import type Collection from "./collection";
 

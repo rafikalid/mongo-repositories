@@ -1,8 +1,8 @@
 {
   "name": "mongo-repositories",
-  "version": "0.1.5",
+  "version": "0.2.2",
   "description": "Tiny layer over mongoDB native driver to simplify queries, validation and indexing",
-  "main": "build/index.js",
+  "main": "build/index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -42,6 +42,7 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
+    "json5": "^2.2.0",
     "mongodb": "^3.6.6"
   }
 }

@@ -5,8 +5,12 @@ import {watch, series, parallel} from 'gulp';
 import compileTypescript from './gulp/typescript'
 
 /** Watch modified files */
-function watchCb():void{
-	watch('src/**/*.ts', compileTypescript);
+const doWatch= !process.argv.includes('--prod');
+function watchCb(cb):void{
+	if(doWatch){
+		watch('src/**/*.ts', compileTypescript);
+	}
+	cb();
 }
 
 export default series([
