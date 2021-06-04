@@ -1,3 +1,6 @@
 /src
 /gulp
 /gulpfile.ts
+/tsconfig.json
+/package-lock.json
+/yarn.lock
