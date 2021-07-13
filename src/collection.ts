@@ -12,7 +12,7 @@ type Document= Record<string, any>;
 /**
  * Mongo Collection adapter
  */
-export default abstract class Collection {
+export default abstract class Collection<T> {
 	abstract name:	string
 	schema: undefined //TODO add schema validation
 	protected db: Repository
@@ -93,7 +93,7 @@ export default abstract class Collection {
 	}
 
 	/*! Predefined Methods for collection */
-	get(id: ObjectID){ return this.c!.findOne({_id: id}) }
+	get(id: ObjectID): Promise<T>{ return this.c!.findOne({_id: id}) }
 	insertOne(doc:Document, options?:any){ return this.c!.insertOne(doc, options); }
 	insertMany(docs: Document[], options?:any){ return this.c!.insertMany(docs, options); }
 

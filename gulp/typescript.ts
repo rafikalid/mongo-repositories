@@ -4,14 +4,14 @@
 import {src, dest, lastRun} from 'gulp';
 import GulpTypescript from 'gulp-typescript';
 import SrcMap from 'gulp-sourcemaps';
-import CreateImportTransformer from './typescript-transformer';
+import {createImportTransformer} from './typescript-transformer';
 import {parse} from 'json5';
 import {readFileSync} from 'fs';
 
 
 //Load config
 const tsConfig= parse(readFileSync('tsconfig.json', 'utf-8'));
-const importTransformer= CreateImportTransformer(tsConfig.compilerOptions);
+const importTransformer= createImportTransformer(tsConfig.compilerOptions);
 
 const isProd= process.argv.includes('--prod');
 

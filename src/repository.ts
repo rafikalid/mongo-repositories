@@ -1,6 +1,6 @@
 import type {MongoClientOptions} from 'mongodb';
 import MongoDB from 'mongodb'
-const {MongoClient}= MongoDB;
+const { MongoClient }= MongoDB;
 
 import Collection from './collection';
 
@@ -17,7 +17,7 @@ export default class Repository{
 	
 	_prefix: string // Index name prefix
 	private _db: any= undefined // DB connector
-	private _collections: Collection[]= [] // store all created collections
+	private _collections: Collection<any>[]= [] // store all created collections
 
 	/** Log function */
 	log: Function | undefined | null
@@ -31,7 +31,7 @@ export default class Repository{
 	}
 
 	/** @private append new Collection wrapper */
-	_addCollection(collection: Collection){
+	_addCollection(collection: Collection<any>){
 		this._collections.push(collection);
 		if(this._db) collection.init(); // create session and adjust indexes
 	}
