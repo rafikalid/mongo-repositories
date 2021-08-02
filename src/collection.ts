@@ -1,5 +1,5 @@
 import type Repository from './repository';
-import type {Collection as MongoCollection, ObjectID, IndexSpecification} from 'mongodb'
+import type {Collection as MongoCollection, ObjectId, IndexDescription} from 'mongodb'
 
 type Document= Record<string, any>;
 
@@ -16,7 +16,7 @@ export default abstract class Collection<T> {
 	abstract name:	string
 	schema: undefined //TODO add schema validation
 	protected db: Repository
-	protected abstract indexes: IndexSpecification[]
+	protected abstract indexes: IndexDescription[]
 	protected _indexPrefix!: string // prefixing index names to be distinguishable
 	
 
@@ -93,9 +93,9 @@ export default abstract class Collection<T> {
 	}
 
 	/*! Predefined Methods for collection */
-	get(id: ObjectID): Promise<T>{ return this.c!.findOne({_id: id}) }
-	insertOne(doc:Document, options?:any){ return this.c!.insertOne(doc, options); }
-	insertMany(docs: Document[], options?:any){ return this.c!.insertMany(docs, options); }
+	get(id: ObjectId): Promise<T>{ return this.c!.findOne({_id: id}) }
+	insertOne(doc:Partial<T>, options?:any){ return this.c!.insertOne(doc, options); }
+	insertMany(docs: Partial<T>[], options?:any){ return this.c!.insertMany(docs, options); }
 
-	set(id: ObjectID, updates: Document){ return this.c!.updateOne({_id: id}, {$set: updates}); }
+	set(id: ObjectId, updates: Partial<T>){ return this.c!.updateOne({_id: id}, {$set: updates}); }
 }

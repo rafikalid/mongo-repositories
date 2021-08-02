@@ -1,15 +1,14 @@
 import Repository from './repository'
 export default Repository;
 
-import MongoDB from 'mongodb'
-import Collection from './collection'
-import {Repo, Indexes} from './collection-deco'
-const {ObjectID}= MongoDB;
+import {ObjectId} from 'mongodb';
+import Collection from './collection';
+import {Repo, Indexes} from './collection-deco';
 
 /** ObjectId */
 export function parseObjectId(value: string){
-	return ObjectID.createFromHexString(value);
+	return ObjectId.createFromHexString(value);
 }
 
 /** Export */
-export {Collection, Repo, Indexes, ObjectID}
+export {Collection, Repo, Indexes, ObjectId}

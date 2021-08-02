@@ -40,9 +40,8 @@ export default class Repository{
 	 * Connect to MongoDB
 	 * @see http://mongodb.github.io/node-mongodb-native/3.1/api/MongoClient.html
 	 */
-	async connect(url: string, options?: MongoClientOptions){
+	async connect(url: string, options: MongoClientOptions= {}){
 		if(this._db) throw new Error('Already connected');
-		if(options==null) options= {useNewUrlParser: true, useUnifiedTopology: true};
 		var dbConn= await MongoClient.connect(url, options);
 		this._db= dbConn;
 		this.name= dbConn.db.name;
