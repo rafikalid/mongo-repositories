@@ -1,5 +1,5 @@
 import type Repository from './repository';
-import type {Collection as MongoCollection, ObjectId, IndexDescription} from 'mongodb'
+import type {Collection as MongoCollection, ObjectId, IndexDescription, BulkWriteOptions, InsertOneOptions, CreateIndexesOptions} from 'mongodb'
 
 type Document= Record<string, any>;
 
@@ -12,16 +12,16 @@ type Document= Record<string, any>;
 /**
  * Mongo Collection adapter
  */
-export default abstract class Collection<T> {
+export default abstract class Collection<T extends Document> {
 	abstract name:	string
 	schema: undefined //TODO add schema validation
 	protected db: Repository
-	protected abstract indexes: IndexDescription[]
+	protected abstract indexes: CreateIndexesOptions[]
 	protected _indexPrefix!: string // prefixing index names to be distinguishable
 	
 
-	c: MongoCollection<any> | undefined= undefined
-	collection: MongoCollection<any> | undefined= undefined
+	c: MongoCollection<T> | undefined= undefined
+	collection: MongoCollection<T> | undefined= undefined
 
 	/** Log to console */
 	private log: Function | undefined | null
@@ -88,14 +88,14 @@ export default abstract class Collection<T> {
 		var newIndexes= schemaIndexes.filter((idx)=> !unmodified.has(idx.name));
 		if(newIndexes.length){
 			this.log?.(`${this.name}: Create indexes>> \n-> ${newIndexes.join("-> \n")}`);
-			await collection.createIndexes(newIndexes);
+			await collection.createIndexes(newIndexes as IndexDescription[]);
 		}
 	}
 
 	/*! Predefined Methods for collection */
-	get(id: ObjectId): Promise<T>{ return this.c!.findOne({_id: id}) }
-	insertOne(doc:Partial<T>, options?:any){ return this.c!.insertOne(doc, options); }
-	insertMany(docs: Partial<T>[], options?:any){ return this.c!.insertMany(docs, options); }
+	get(id: ObjectId): Promise<T|undefined>{ return this.c!.findOne<T>({_id: id}) }
+	insertOne(doc:Partial<T>, options?:InsertOneOptions){ return this.c!.insertOne(doc as any, options); }
+	insertMany(docs: Partial<T>[], options?:BulkWriteOptions){ return this.c!.insertMany(docs as any, options!); }
 
 	set(id: ObjectId, updates: Partial<T>){ return this.c!.updateOne({_id: id}, {$set: updates}); }
 }
