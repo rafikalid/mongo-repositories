@@ -1,5 +1,5 @@
 import type Repository from './repository';
-import type {Collection as MongoCollection, ObjectId, IndexDescription, BulkWriteOptions, InsertOneOptions, CreateIndexesOptions} from 'mongodb'
+import type {Collection as MongoCollection, ObjectId, IndexDescription, BulkWriteOptions, InsertOneOptions, CreateIndexesOptions, OnlyFieldsOfType} from 'mongodb'
 
 type Document= Record<string, any>;
 
@@ -97,5 +97,13 @@ export default abstract class Collection<T extends Document> {
 	insertOne(doc:Partial<T>, options?:InsertOneOptions){ return this.c!.insertOne(doc as any, options); }
 	insertMany(docs: Partial<T>[], options?:BulkWriteOptions){ return this.c!.insertMany(docs as any, options!); }
 
+	/** Set documents fields */
 	set(id: ObjectId, updates: Partial<T>){ return this.c!.updateOne({_id: id}, {$set: updates}); }
+
+	/** Unset documents fields */
+	unset(id: ObjectId, fields: OnlyFieldsOfType<T, any, '' | true | 1>){
+		return this.c!.updateOne({_id: id}, {
+			$unset: fields
+		});
+	}
 }
