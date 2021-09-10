@@ -1,6 +1,6 @@
 {
   "name": "mongo-repositories",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "description": "Tiny layer over mongoDB native driver to simplify queries, validation and indexing",
   "main": "build/index.js",
   "exports": "./build/index.js",
