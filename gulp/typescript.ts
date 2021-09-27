@@ -1,35 +1,55 @@
 /**
  * Compile Typescript files
  */
-import {src, dest, lastRun} from 'gulp';
+import Gulp from 'gulp';
 import GulpTypescript from 'gulp-typescript';
 import SrcMap from 'gulp-sourcemaps';
-import {createImportTransformer} from './typescript-transformer';
-import {parse} from 'json5';
-import {readFileSync} from 'fs';
+import { Converter } from 'typescript-path-fix';
+import GulpRename from 'gulp-rename';
 
+const { src, dest, lastRun } = Gulp;
+// import {transform} from 'ts-transform-import-path-rewrite'
 
-//Load config
-const tsConfig= parse(readFileSync('tsconfig.json', 'utf-8'));
-const importTransformer= createImportTransformer(tsConfig.compilerOptions);
+const isProd = process.argv.includes('--prod');
 
-const isProd= process.argv.includes('--prod');
+const tsPathFix = new Converter('tsconfig.json');
 
 const TsProject = GulpTypescript.createProject('tsconfig.json', {
 	removeComments: isProd,
 	pretty: !isProd,
-	getCustomTransformers: ()=>({
-		after: [
-			importTransformer
-		]
-	})
+	target: 'ESNext',
+	module: 'ESNext'
 });
-// import babel from 'gulp-babel';
+const TsProjectCommonjs = GulpTypescript.createProject('tsconfig.json', {
+	removeComments: isProd,
+	pretty: !isProd,
+	target: 'ES2015',
+	module: 'CommonJS'
+});
 
-export default function typescriptCompile(){
-	return src('src/**/*.ts', {nodir: true, since: lastRun(typescriptCompile)})
+/** Compile as EsNext */
+export function compileEsNext() {
+	return src('src/**/*.ts', {
+		nodir: true,
+		since: lastRun(compileEsNext)
+	})
 		.pipe(SrcMap.init())
 		.pipe(TsProject())
+		.pipe(tsPathFix.gulp('.mjs'))
+		.pipe(GulpRename({ extname: '.mjs' }))
 		.pipe(SrcMap.write('.'))
-		.pipe(dest('build'));
+		.pipe(dest('dist/module'));
+}
+
+/** Compile as Commonjs */
+export function compileCommonjs() {
+	return src('src/**/*.ts', {
+		nodir: true,
+		since: lastRun(compileCommonjs)
+	})
+		.pipe(SrcMap.init())
+		.pipe(tsPathFix.gulp())
+		.pipe(TsProjectCommonjs())
+		.pipe(SrcMap.write('.'))
+		.pipe(dest('dist/commonjs'));
 }
