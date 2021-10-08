@@ -111,7 +111,9 @@ export default abstract class Collection<T extends Document> {
 	}
 
 	/*! Predefined Methods for collection */
-	get(id: ObjectId): Promise<T | null> {
+	get(id: ObjectId): Promise<T | null>
+	get<T2>(id: ObjectId): Promise<T2 | null>;
+	get(id: ObjectId) {
 		return this.c!.findOne<T>({ _id: id });
 	}
 	insertOne(doc: OptionalId<T>, options?: InsertOneOptions) {

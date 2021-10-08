@@ -1,6 +1,6 @@
 {
 	"name": "mongo-repositories",
-	"version": "0.2.13",
+	"version": "0.2.16",
 	"description": "Tiny layer over mongoDB native driver to simplify queries, validation and indexing",
 	"main": "dist/commonjs/index.js",
 	"exports": {
@@ -29,13 +29,15 @@
 	},
 	"homepage": "https://github.com/rafikalid/mongo-repositories#readme",
 	"devDependencies": {
-		"@types/gulp": "^4.0.8",
-		"@types/gulp-concat": "0.0.32",
+		"@types/gulp": "^4.0.9",
+		"@types/gulp-concat": "0.0.33",
 		"@types/gulp-rename": "^2.0.1",
-		"@types/gulp-sourcemaps": "0.0.34",
-		"@types/merge2": "^1.3.0",
-		"@types/mongodb": "^3.6.12",
-		"chalk": "^4.1.0",
+		"@types/gulp-sourcemaps": "0.0.35",
+		"@types/merge2": "^1.3.1",
+		"@types/mongodb": "^4.0.7",
+		"@types/through2": "^2.0.36",
+		"@types/uglify-js": "^3.13.1",
+		"chalk": "^4.1.2",
 		"cli-table": "^0.3.6",
 		"gulp": "^4.0.2",
 		"gulp-concat": "^2.6.1",
@@ -44,11 +46,12 @@
 		"gulp-typescript": "^6.0.0-alpha.1",
 		"json5": "^2.2.0",
 		"merge2": "^1.4.1",
-		"ts-node": "^9.1.1",
-		"typescript": "^4.2.4",
-		"typescript-path-fix": "^1.0.5"
+		"ts-node": "^10.2.1",
+		"typescript": "^4.4.3",
+		"typescript-path-fix": "^1.0.8",
+		"uglify-js": "^3.14.2"
 	},
 	"dependencies": {
-		"mongodb": "^4.1.2"
+		"mongodb": "^4.1.3"
 	}
 }
