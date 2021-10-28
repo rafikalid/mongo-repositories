@@ -10,7 +10,8 @@ interface RepositoryOptions {
 }
 
 export default class Repository {
-	db: any = undefined; // db
+	db: MongoDB.Db | undefined = undefined; // db
+	client: MongoDB.MongoClient | undefined = undefined;
 	name: string | undefined = undefined; //Database name
 	mongoClient = MongoClient; // Mongo native client
 
@@ -23,7 +24,7 @@ export default class Repository {
 
 	constructor(options: RepositoryOptions) {
 		if (typeof options.prefix !== 'string')
-			throw new Error('Exprected options.prefix');
+			throw new Error('Missing options.prefix');
 		this._prefix = options.prefix;
 
 		// Log method
@@ -47,8 +48,8 @@ export default class Repository {
 		dbName: string,
 		options: MongoClientOptions = {}
 	) {
-		if (this._db) throw new Error('Already connected');
-		var dbConn = await MongoClient.connect(url, options);
+		if (this._db != null) throw new Error('Already connected');
+		var dbConn = this.client = await MongoClient.connect(url, options);
 		this._db = dbConn;
 		this.name = dbName;
 		var db = (this.db = dbConn.db(dbName));

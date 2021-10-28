@@ -43,7 +43,7 @@ export default abstract class Collection<T extends Document> {
 
 	/** @Private Init connection */
 	async init() {
-		this.c = this.collection = this.db.db.collection(this.name);
+		this.c = this.collection = this.db!.db!.collection(this.name);
 		// Reload indexes
 		await this.reloadIndexes();
 	}
