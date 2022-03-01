@@ -36,11 +36,9 @@ export default class Repository {
 
 	/** @private append new Collection wrapper */
 	_addCollection(collection: Collection<any>) {
-		if (this._collectionNames.has(collection.name))
-			throw new Error(`Duplicate collection name: ${collection.name}`);
-		this._collectionNames.add(collection.name);
 		this._collections.push(collection);
-		if (this._db) collection.init(); // create session and adjust indexes
+		if (this._db)
+			setImmediate(() => collection.init()); // create session and adjust indexes
 	}
 
 	/**
@@ -65,9 +63,14 @@ export default class Repository {
 		) as string[];
 
 		// init all collections
-		var ref = this._collections;
+		const ref = this._collections;
+		const colNameSet = this._collectionNames;
 		for (var i = 0, len = ref.length; i < len; i++) {
 			var collection = ref[i];
+			// Check duplication
+			if (colNameSet.has(collection.name))
+				throw new Error(`Duplicate collection name: ${collection.name}`);
+			colNameSet.add(collection.name);
 			// Create new collection
 			if (!dbCollections.includes(collection.name))
 				await db.createCollection(collection.name);
