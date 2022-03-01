@@ -28,8 +28,8 @@ export default abstract class Collection<T extends Document> {
 	protected abstract indexes: CreateIndexesOptions[];
 	protected _indexPrefix!: string; // prefixing index names to be distinguishable
 
-	c: MongoCollection<T> | undefined = undefined;
-	collection: MongoCollection<T> | undefined = undefined;
+	c!: MongoCollection<T>;
+	collection!: MongoCollection<T>;
 
 	/** Log to console */
 	private log: Function | undefined | null;
@@ -50,7 +50,7 @@ export default abstract class Collection<T extends Document> {
 
 	/** Drop collection */
 	drop(options?: any) {
-		return this.c!.drop(options);
+		return this.c.drop(options);
 	}
 
 	/** Get all indexes from DB */
@@ -73,7 +73,7 @@ export default abstract class Collection<T extends Document> {
 			var index = schemaIndexes[i];
 			if (!index.name!.startsWith(prefix))
 				throw new Error(
-					`All indexes expected to be prefixed with: ${prefix}. Got ${index.name} on colllection ${this.name}`
+					`All indexes expected to be prefixed with: ${prefix}. Got ${index.name} on collection ${this.name}`
 				);
 			if (newIndexNameSet.has(index.name))
 				throw new Error(
@@ -112,23 +112,23 @@ export default abstract class Collection<T extends Document> {
 
 	/*! Predefined Methods for collection */
 	get<T2 = T>(id: ObjectId): Promise<T2 | null> {
-		return this.c!.findOne<T2>({ _id: id });
+		return this.c.findOne<T2>({ _id: id });
 	}
 	insertOne(doc: OptionalId<T>, options?: InsertOneOptions) {
-		return this.c!.insertOne(doc, options!);
+		return this.c.insertOne(doc, options!);
 	}
 	insertMany(docs: OptionalId<T>[], options?: BulkWriteOptions) {
-		return this.c!.insertMany(docs, options!);
+		return this.c.insertMany(docs, options!);
 	}
 
 	/** Set documents fields */
 	set(id: ObjectId, updates: Partial<T>) {
-		return this.c!.updateOne({ _id: id }, { $set: updates });
+		return this.c.updateOne({ _id: id }, { $set: updates });
 	}
 
 	/** Unset documents fields */
 	unset(id: ObjectId, fields: OnlyFieldsOfType<T, any, '' | true | 1>) {
-		return this.c!.updateOne(
+		return this.c.updateOne(
 			{ _id: id },
 			{
 				$unset: fields

@@ -18,6 +18,7 @@ export default class Repository {
 	_prefix: string; // Index name prefix
 	private _db: any = undefined; // DB connector
 	private _collections: Collection<any>[] = []; // store all created collections
+	private _collectionNames: Set<string> = new Set();
 
 	/** Log function */
 	log: Function | undefined | null;
@@ -35,6 +36,9 @@ export default class Repository {
 
 	/** @private append new Collection wrapper */
 	_addCollection(collection: Collection<any>) {
+		if (this._collectionNames.has(collection.name))
+			throw new Error(`Duplicate collection name: ${collection.name}`);
+		this._collectionNames.add(collection.name);
 		this._collections.push(collection);
 		if (this._db) collection.init(); // create session and adjust indexes
 	}
@@ -78,11 +82,11 @@ export default class Repository {
 		await this._db.close(force);
 		this.db = this._db = undefined;
 		// Remove native collections
-		var ref = this._collections;
-		for (var i = 0, len = ref.length; i < len; i++) {
-			var col = ref[i];
-			col.c = col.collection = undefined;
-		}
+		// var ref = this._collections;
+		// for (var i = 0, len = ref.length; i < len; i++) {
+		// 	var col = ref[i];
+		// 	col.c = col.collection = undefined;
+		// }
 	}
 
 	/** Check is connected */
