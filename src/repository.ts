@@ -4,7 +4,7 @@ const { MongoClient } = MongoDB;
 
 import Collection from './collection';
 
-interface RepositoryOptions {
+export interface RepositoryOptions {
 	prefix: string;
 	log?: Function | undefined | null;
 }
@@ -46,9 +46,11 @@ export default class Repository {
 	async connect(
 		url: string,
 		dbName: string,
-		options: MongoClientOptions = {}
+		options: MongoClientOptions = {},
+		mongoClient: typeof MongoDB.MongoClient = MongoClient
 	) {
 		if (this._db != null) throw new Error('Already connected');
+		this.mongoClient = mongoClient;
 		var dbConn = this.client = await MongoClient.connect(url, options);
 		this._db = dbConn;
 		this.name = dbName;
